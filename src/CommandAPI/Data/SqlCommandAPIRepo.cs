@@ -8,10 +8,7 @@ namespace CommandAPI.Data
     {
         private readonly CommandContext _context;
 
-        public SqlCommandAPIRepo(CommandContext context)
-        {
-            _context = context;
-        }
+        public SqlCommandAPIRepo(CommandContext context) => _context = context;
 
         public void CreateCommand(Command cmd)
         {
@@ -23,15 +20,9 @@ namespace CommandAPI.Data
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Command> GetAllCOmmands()
-        {
-            return _context.CommandItems.ToList();
-        }
+        public IEnumerable<Command> GetAllCOmmands() => _context.CommandItems.ToList();
 
-        public Command GetCommandById(int id)
-        {
-            return _context.CommandItems.FirstOrDefault(c => c.Id == id);
-        }
+        public Command GetCommandById(int id) => _context.CommandItems.FirstOrDefault(c => c.Id == id);
 
         public bool SaveChanges()
         {
