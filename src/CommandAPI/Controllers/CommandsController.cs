@@ -12,6 +12,8 @@ namespace CommandAPI.Controllers
     [ApiController]
     public class CommandsController : ControllerBase
     {
+        //Random change
+
         private readonly ICommandAPIRepo _repository;
         private readonly IMapper _mapper;
 
@@ -36,22 +38,24 @@ namespace CommandAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
         {
-            var commandItems = _repository.GetAllCOmmands();
+            var commandItems = _repository.GetAllCommands();
 
             return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(commandItems));
         }
 
         [HttpGet("{id}", Name = "GetCommandById")]
-        public ActionResult<Command> GetCommandById(int id)
+        public ActionResult<CommandReadDto> GetCommandById(int id)
         {
-            var commandItem = _repository.GetCommandById(id);
+            Command commandItem = _repository.GetCommandById(id);
 
             if (commandItem == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<CommandReadDto>(commandItem));
+            CommandReadDto test = _mapper.Map<CommandReadDto>(commandItem);
+
+            return Ok(test);
         }
 
         [HttpPut("{id}")]

@@ -15,7 +15,7 @@ namespace CommandAPI.Data
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Command> GetAllCOmmands()
+        public IEnumerable<Command> GetAllCommands()
         {
             var commands = new List<Command>
             {
@@ -49,7 +49,7 @@ namespace CommandAPI.Data
 
         public Command GetCommandById(int id)
         {
-            return new Command
+            return new()
             {
                 Id = 0,
                 HowTo = "How to generate a migration",
