@@ -13,7 +13,7 @@ namespace CommandAPI
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -22,12 +22,13 @@ namespace CommandAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var builder = new NpgsqlConnectionStringBuilder();
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection"),
+                Username = Configuration["UserId"],
+                Password = Configuration["Password"]
+            };
             
-            builder.ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection");
-            builder.Username = Configuration["UserId"];
-            builder.Password = Configuration["Password"];
-
             services.AddDbContext<CommandContext>(opt => opt.UseNpgsql(builder.ConnectionString));
 
             services.AddControllers().AddNewtonsoftJson(s => 
@@ -40,8 +41,10 @@ namespace CommandAPI
             services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CommandContext context)
         {
+            context.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
